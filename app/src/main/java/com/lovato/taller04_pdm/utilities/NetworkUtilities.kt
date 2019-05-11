@@ -10,6 +10,7 @@ class NetworkUtilities{
     companion object {
         const val BASE_URL = "https://coinsapipdm.herokuapp.com/"
         const val PATH_COIN = "coins"
+        const val PATH_ALL_COINS = "coins"
         const val TOKEN = "AS"
 
 
@@ -24,6 +25,7 @@ class NetworkUtilities{
         fun buildURL() = URL(
             Uri.parse(BASE_URL)
                 .buildUpon()
+                .appendPath(PATH_ALL_COINS)
                 .build().toString()
         )
 

@@ -31,13 +31,8 @@ class CoinAdapter(var items: List<Coin>,var listener: (Coin)-> Unit):
     class ViewHolder(var item: View): RecyclerView.ViewHolder(item){
         fun bin(coin: Coin, listener: (Coin) -> Unit){
             with(item){
-                tv_name.text = coin.name
-                tv_country.text = coin.country
-                tv_year.text = coin.year.toString()
-                tv_isAvailable.text = coin.isAvailable.toString()
-                tv_value_us.text = coin.value_us.toString()
-
-
+                title_list_item.text = coin.name
+                country_list_item.text = coin.country
                 setOnClickListener {
                     listener(coin)
                 }

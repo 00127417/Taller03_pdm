@@ -9,7 +9,7 @@ class CoinSerializer{
     companion object {
         fun parseCoins(coinsText: String): List<Coin>{
             var coinsJSON = JSONArray(coinsText)
-            return MutableList(coinsJSON.length()-1){
+            return MutableList(coinsJSON.length()){
                 parseCoin(coinsJSON[it].toString())
             }
         }
