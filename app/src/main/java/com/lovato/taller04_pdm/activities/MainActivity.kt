@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.content_main)
 
+        setSupportActionBar(toolbar)
+
         viewManager = LinearLayoutManager(this)
         viewAdapter = CoinAdapter(listOf<Coin>()) {
             startActivity(Intent(this, CoinViewerActivity::class.java).putExtra("name",it.name)
@@ -125,22 +127,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // TODO (14.3) Los Id solo los que estan escritos en el archivo de MENU
             R.id.nav_camera -> {
 
-                CoinFetch().execute("colon")
+                CoinFetch().execute("el salvador")
 
             }
             R.id.nav_gallery -> {
+                CoinFetch().execute("guatemala")
 
             }
             R.id.nav_slideshow -> {
+                CoinFetch().execute("panama")
 
             }
             R.id.nav_manage -> {
+                CoinFetch().execute("cordoba")
 
             }
             R.id.nav_share -> {
+                CoinFetch().execute("balboa")
 
             }
             R.id.nav_send -> {
+                CoinFetch().execute("dolar beliceño")
 
             }
         }
@@ -151,8 +158,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    inner class CoinFetch : AsyncTask<String, Unit, Coin>() {
-        override fun doInBackground(vararg params: String): Coin {
+    inner class CoinFetch : AsyncTask<String, Unit, List<Coin>>() {
+        override fun doInBackground(vararg params: String): List<Coin> {
 
 
             val url = NetworkUtilities.buildURL(params[0])
@@ -162,19 +169,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val resultJSON = JSONObject(resultString)
 
             return if(resultJSON.getBoolean("success")){
-                CoinSerializer.parseCoin(
-                    resultJSON.getJSONObject("coin").toString())
+                CoinSerializer.parseCoins(
+                    resultJSON.getJSONArray("coin").toString())
             }else{
-                Coin()
+                listOf()
             }
         }
 
-        override fun onPostExecute(result: Coin) {
+        override fun onPostExecute(result: List<Coin>) {
             if(!result.equals("")){
-                var list: MutableList<Coin> = mutableListOf(result)
 
 
-                viewAdapter.setData(list)
+
+                viewAdapter.setData(result)
 
             }else{
                 Snackbar.make(rv_moneda,"No se pudo obtener monedas", Snackbar.LENGTH_SHORT).show()
