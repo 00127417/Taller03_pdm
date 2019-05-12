@@ -9,37 +9,34 @@
 
         <!-- TODO (3.5) Los mienbros del menu necesitan ID, TITLE-->
         <item
-                android:id="@+id/nav_camera"
-                android:icon="@drawable/ic_menu_camera"
-                android:title="Import"/>
+                android:id="@+id/search_all"
+                android:icon="@drawable/ic_coins"
+                android:title="All Coins"/>
         <item
-                android:id="@+id/nav_gallery"
-                android:icon="@drawable/ic_menu_gallery"
-                android:title="Gallery"/>
+                android:id="@+id/search_salvador"
+                android:icon="@drawable/ic_coins"
+                android:title="El Salvador"/>
         <item
-                android:id="@+id/nav_slideshow"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="Slideshow"/>
+                android:id="@+id/search_guatemala"
+                android:icon="@drawable/ic_coins"
+                android:title="Guatemala"/>
         <item
-                android:id="@+id/nav_manage"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Tools"/>
-    </group>
+                android:id="@+id/search_honduras"
+                android:icon="@drawable/ic_coins"
+                android:title="Honduras"/>
 
-    <!-- TODO (3.6) Se puede definir  seccion con Communicate -->
-    <item android:title="Communicate">
-        <!-- TODO (3.7) Debe definirse un menu -->
-        <menu>
-            <!-- TODO (3.7) Y lo elementos que lo conforman -->
-            <item
-                    android:id="@+id/nav_share"
-                    android:icon="@drawable/ic_menu_share"
-                    android:title="Share"/>
-            <item
-                    android:id="@+id/nav_send"
-                    android:icon="@drawable/ic_menu_send"
-                    android:title="Send"/>
-        </menu>
-    </item>
+        <item
+                android:id="@+id/search_nicaragua"
+                android:icon="@drawable/ic_coins"
+                android:title="Nicaragua"/>
+        <item
+                android:id="@+id/search_panama"
+                android:icon="@drawable/ic_coins"
+                android:title="Panama"/>
+        <item
+                android:id="@+id/search_belice"
+                android:icon="@drawable/ic_coins"
+                android:title="Belice"/>
+    </group>
 
 </menu>

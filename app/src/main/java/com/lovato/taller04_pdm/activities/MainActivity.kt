@@ -125,29 +125,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             // TODO (14.3) Los Id solo los que estan escritos en el archivo de MENU
-            R.id.nav_camera -> {
+            R.id.search_all -> {
 
+                CoinsFetch().execute()
+
+            }
+            R.id.search_salvador -> {
                 CoinFetch().execute("el salvador")
 
             }
-            R.id.nav_gallery -> {
+            R.id.search_guatemala -> {
                 CoinFetch().execute("guatemala")
 
             }
-            R.id.nav_slideshow -> {
+            R.id.search_honduras -> {
+                CoinFetch().execute("honduras")
+
+            }
+            R.id.search_nicaragua -> {
+                CoinFetch().execute("nicaragua")
+
+            }
+            R.id.search_panama -> {
                 CoinFetch().execute("panama")
 
             }
-            R.id.nav_manage -> {
-                CoinFetch().execute("cordoba")
 
-            }
-            R.id.nav_share -> {
-                CoinFetch().execute("balboa")
-
-            }
-            R.id.nav_send -> {
-                CoinFetch().execute("dolar beliceño")
+            R.id.search_belice -> {
+                CoinFetch().execute("belice")
 
             }
         }
