@@ -10,32 +10,32 @@
         <!-- TODO (3.5) Los mienbros del menu necesitan ID, TITLE-->
         <item
                 android:id="@+id/search_all"
-                android:icon="@drawable/ic_coins"
+                android:icon="@drawable/ic_coin"
                 android:title="All Coins"/>
         <item
                 android:id="@+id/search_salvador"
-                android:icon="@drawable/ic_coins"
+                android:icon="@drawable/ic_coin"
                 android:title="El Salvador"/>
         <item
                 android:id="@+id/search_guatemala"
-                android:icon="@drawable/ic_coins"
+                android:icon="@drawable/ic_coin"
                 android:title="Guatemala"/>
         <item
                 android:id="@+id/search_honduras"
-                android:icon="@drawable/ic_coins"
+                android:icon="@drawable/ic_coin"
                 android:title="Honduras"/>
 
         <item
                 android:id="@+id/search_nicaragua"
-                android:icon="@drawable/ic_coins"
+                android:icon="@drawable/ic_coin"
                 android:title="Nicaragua"/>
         <item
                 android:id="@+id/search_panama"
-                android:icon="@drawable/ic_coins"
+                android:icon="@drawable/ic_coin"
                 android:title="Panama"/>
         <item
                 android:id="@+id/search_belice"
-                android:icon="@drawable/ic_coins"
+                android:icon="@drawable/ic_coin"
                 android:title="Belice"/>
     </group>
 
