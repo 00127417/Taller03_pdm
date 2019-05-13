@@ -23,6 +23,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    var dbHelper = Database(this)
 
     lateinit var viewAdapter: CoinAdapter
     lateinit var viewManager: LinearLayoutManager
