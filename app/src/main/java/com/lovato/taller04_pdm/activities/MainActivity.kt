@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -131,7 +132,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // TODO (14.3) Los Id solo los que estan escritos en el archivo de MENU
             R.id.search_all -> {
 
-                CoinsFetch().execute()
+                viewAdapter.setData(readCoins())
 
             }
             R.id.search_salvador -> {
@@ -166,6 +167,52 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+
+    private fun readCoins(): List<Coin> {
+
+// TODO(13) Para obtener los datos almacenados, es necesario solicitar una instancia de lectura de la base de datos.
+        val db = dbHelper.readableDatabase
+
+        val projection = arrayOf(
+            BaseColumns._ID,
+            DatabaseContract.CoinEntry.COLUMN_NAME,
+            DatabaseContract.CoinEntry.COLUMN_COUNTRY,
+            DatabaseContract.CoinEntry.COLUMN_YEAR,
+            DatabaseContract.CoinEntry.COLUMN_ISAVAILABLE,
+            DatabaseContract.CoinEntry.COLUMN_VALUE_US,
+            DatabaseContract.CoinEntry.COLUMN_IMG
+        )
+
+
+        val cursor = db.query(
+            DatabaseContract.CoinEntry.TABLE_NAME, // nombre de la tabla
+            projection, // columnas que se devolverán
+            null, // Columns where clausule
+            null, // values Where clausule
+            null, // Do not group rows
+            null, // do not filter by row
+            null // sort order
+        )
+
+        var lista = mutableListOf<Coin>()
+
+        with(cursor) {
+            while (moveToNext()) {
+                var persona = Coin(
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_NAME)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_COUNTRY)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_YEAR)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_ISAVAILABLE)),
+                    getDouble(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_VALUE_US)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_IMG))
+                )
+
+                lista.add(persona)
+            }
+        }
+
+        return lista
+    }
 
     inner class CoinFetch : AsyncTask<String, Unit, List<Coin>>() {
         override fun doInBackground(vararg params: String): List<Coin> {
@@ -217,21 +264,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if(result.isNotEmpty()){
 
                 for (i in result){
-                    val name = i.name
-                    val country = i.country
-                    val year = i.year
-                    val isAvailable = i.isAvailable
-                    val value_us = i.isAvailable
-                    val img = i.img
-
                     val db = dbHelper.writableDatabase
                     val values = ContentValues().apply {
-                        put(DatabaseContract.CoinEntry.COLUMN_NAME,name)
-                        put(DatabaseContract.CoinEntry.COLUMN_COUNTRY,country)
-                        put(DatabaseContract.CoinEntry.COLUMN_YEAR,year)
-                        put(DatabaseContract.CoinEntry.COLUMN_ISAVAILABLE,isAvailable)
-                        put(DatabaseContract.CoinEntry.COLUMN_VALUE_US,value_us)
-                        put(DatabaseContract.CoinEntry.COLUMN_IMG,img)
+                        put(DatabaseContract.CoinEntry.COLUMN_NAME,i.name)
+                        put(DatabaseContract.CoinEntry.COLUMN_COUNTRY,i.country)
+                        put(DatabaseContract.CoinEntry.COLUMN_YEAR,i.year)
+                        put(DatabaseContract.CoinEntry.COLUMN_ISAVAILABLE,i.isAvailable)
+                        put(DatabaseContract.CoinEntry.COLUMN_VALUE_US,i.value_us)
+                        put(DatabaseContract.CoinEntry.COLUMN_IMG,i.img)
                     }
 
                     val newRowId = db?.insert(DatabaseContract.CoinEntry.TABLE_NAME, null, values)
@@ -241,7 +281,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     } else {
                         Toast.makeText(this@MainActivity, getString(R.string.alert_coin_saved_success) + newRowId, Toast.LENGTH_SHORT)
                             .show()
-                        viewAdapter.setData(result)
                     }
                 }
                 viewAdapter.setData(result)
