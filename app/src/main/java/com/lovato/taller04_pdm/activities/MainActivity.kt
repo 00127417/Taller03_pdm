@@ -136,28 +136,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.search_salvador -> {
-                CoinFetch().execute("el salvador")
+                viewAdapter.setData(readCoin("el salvador"))
 
             }
             R.id.search_guatemala -> {
-                CoinFetch().execute("guatemala")
+                viewAdapter.setData(readCoin("guatemala"))
 
             }
             R.id.search_honduras -> {
-                CoinFetch().execute("honduras")
+                viewAdapter.setData(readCoin("honduras"))
 
             }
             R.id.search_nicaragua -> {
-                CoinFetch().execute("nicaragua")
+                viewAdapter.setData(readCoin("nicaragua"))
 
             }
             R.id.search_panama -> {
-                CoinFetch().execute("panama")
+                viewAdapter.setData(readCoin("panama"))
 
             }
 
             R.id.search_belice -> {
-                CoinFetch().execute("belice")
+                viewAdapter.setData(readCoin("belice"))
 
             }
         }
@@ -166,7 +166,54 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+    private fun readCoin(query:String): List<Coin> {
 
+// TODO(13) Para obtener los datos almacenados, es necesario solicitar una instancia de lectura de la base de datos.
+        val db = dbHelper.readableDatabase
+
+        val projection = arrayOf(
+            BaseColumns._ID,
+            DatabaseContract.CoinEntry.COLUMN_NAME,
+            DatabaseContract.CoinEntry.COLUMN_COUNTRY,
+            DatabaseContract.CoinEntry.COLUMN_YEAR,
+            DatabaseContract.CoinEntry.COLUMN_ISAVAILABLE,
+            DatabaseContract.CoinEntry.COLUMN_VALUE_US,
+            DatabaseContract.CoinEntry.COLUMN_IMG
+        )
+
+
+        val whereClaus = "country = '${query}'"
+
+
+        val cursor = db.query(
+            DatabaseContract.CoinEntry.TABLE_NAME, // nombre de la tabla
+            projection, // columnas que se devolverán
+            whereClaus, // Columns where clausule
+            null, // values Where clausule
+            null, // Do not group rows
+            null, // do not filter by row
+            null // sort order
+        )
+
+        var lista = mutableListOf<Coin>()
+
+        with(cursor) {
+            while (moveToNext()) {
+                var coin = Coin(
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_NAME)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_COUNTRY)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_YEAR)),
+                    getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_ISAVAILABLE)),
+                    getDouble(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_VALUE_US)),
+                    getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_IMG))
+                )
+
+                lista.add(coin)
+            }
+        }
+
+        return lista
+    }
 
     private fun readCoins(): List<Coin> {
 
@@ -198,8 +245,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         with(cursor) {
             while (moveToNext()) {
-                var persona = Coin(
-                    getInt(getColumnIndexOrThrow(BaseColumns._ID)),
+                var coin = Coin(
                     getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_NAME)),
                     getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_COUNTRY)),
                     getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_YEAR)),
@@ -208,7 +254,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_IMG))
                 )
 
-                lista.add(persona)
+                lista.add(coin)
             }
         }
 
@@ -280,14 +326,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         put(DatabaseContract.CoinEntry.COLUMN_VALUE_US,i.value_us)
                         put(DatabaseContract.CoinEntry.COLUMN_IMG,i.img)
                     }
-
                     val newRowId = db?.insert(DatabaseContract.CoinEntry.TABLE_NAME, null, values)
 
                     if (newRowId == -1L) {
                         Toast.makeText(this@MainActivity,R.string.alert_coin_not_saved,Toast.LENGTH_LONG).show()
                     } else {
-                        Toast.makeText(this@MainActivity, getString(R.string.alert_coin_saved_success) + newRowId, Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(this@MainActivity, getString(R.string.alert_coin_saved_success) + newRowId, Toast.LENGTH_SHORT).show()
                     }
                 }
                 viewAdapter.setData(result)

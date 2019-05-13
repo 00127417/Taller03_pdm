@@ -17,7 +17,8 @@ class CoinSerializer{
         fun parseCoin(coinsText: String): Coin{
             val coinJSON = JSONObject(coinsText)
             return with(coinJSON){
-                Coin(getString("name"),
+                Coin(
+                    getString("name"),
                     getString("country"),
                     getInt("year"),
                     getInt("isAvailable"),
