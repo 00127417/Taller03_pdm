@@ -13,13 +13,13 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.lovato.taller04_pdm.R
 import com.lovato.taller04_pdm.adapter.CoinAdapter
+import com.lovato.taller04_pdm.data.Database
 import com.lovato.taller04_pdm.models.Coin
 import com.lovato.taller04_pdm.utilities.CoinSerializer
 import com.lovato.taller04_pdm.utilities.NetworkUtilities
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import org.json.JSONArray
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
