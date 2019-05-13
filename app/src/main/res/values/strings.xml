@@ -7,4 +7,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="alert_coin_not_saved">Coin not saved</string>
+    <string name="alert_coin_saved_success">Coin saved success</string>
 </resources>

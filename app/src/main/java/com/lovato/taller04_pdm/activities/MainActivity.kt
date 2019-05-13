@@ -1,11 +1,13 @@
 package com.lovato.taller04_pdm.activities
 
+import android.content.ContentValues
 import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.lovato.taller04_pdm.R
 import com.lovato.taller04_pdm.adapter.CoinAdapter
 import com.lovato.taller04_pdm.data.Database
+import com.lovato.taller04_pdm.data.DatabaseContract
 import com.lovato.taller04_pdm.models.Coin
 import com.lovato.taller04_pdm.utilities.CoinSerializer
 import com.lovato.taller04_pdm.utilities.NetworkUtilities
@@ -185,8 +188,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onPostExecute(result: List<Coin>) {
             if(!result.equals("")){
 
-
-
                 viewAdapter.setData(result)
 
             }else{
@@ -214,7 +215,37 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         override fun onPostExecute(result: List<Coin>) {
             if(result.isNotEmpty()){
+
+                for (i in result){
+                    val name = i.name
+                    val country = i.country
+                    val year = i.year
+                    val isAvailable = i.isAvailable
+                    val value_us = i.isAvailable
+                    val img = i.img
+
+                    val db = dbHelper.writableDatabase
+                    val values = ContentValues().apply {
+                        put(DatabaseContract.CoinEntry.COLUMN_NAME,name)
+                        put(DatabaseContract.CoinEntry.COLUMN_COUNTRY,country)
+                        put(DatabaseContract.CoinEntry.COLUMN_YEAR,year)
+                        put(DatabaseContract.CoinEntry.COLUMN_ISAVAILABLE,isAvailable)
+                        put(DatabaseContract.CoinEntry.COLUMN_VALUE_US,value_us)
+                        put(DatabaseContract.CoinEntry.COLUMN_IMG,img)
+                    }
+
+                    val newRowId = db?.insert(DatabaseContract.CoinEntry.TABLE_NAME, null, values)
+
+                    if (newRowId == -1L) {
+                        Toast.makeText(this@MainActivity,R.string.alert_coin_not_saved,Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this@MainActivity, getString(R.string.alert_coin_saved_success) + newRowId, Toast.LENGTH_SHORT)
+                            .show()
+                        viewAdapter.setData(result)
+                    }
+                }
                 viewAdapter.setData(result)
+
 
             }else{
                 Snackbar.make(rv_moneda,"No se pudo obtener monedas", Snackbar.LENGTH_SHORT).show()
