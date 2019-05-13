@@ -199,6 +199,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         with(cursor) {
             while (moveToNext()) {
                 var persona = Coin(
+                    getInt(getColumnIndexOrThrow(BaseColumns._ID)),
                     getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_NAME)),
                     getString(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_COUNTRY)),
                     getInt(getColumnIndexOrThrow(DatabaseContract.CoinEntry.COLUMN_YEAR)),
@@ -212,6 +213,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         return lista
+    }
+
+    override fun onDestroy() {
+        dbHelper.close()
+        super.onDestroy()
     }
 
     inner class CoinFetch : AsyncTask<String, Unit, List<Coin>>() {
@@ -263,8 +269,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onPostExecute(result: List<Coin>) {
             if(result.isNotEmpty()){
 
+                val db = dbHelper.writableDatabase
                 for (i in result){
-                    val db = dbHelper.writableDatabase
+
                     val values = ContentValues().apply {
                         put(DatabaseContract.CoinEntry.COLUMN_NAME,i.name)
                         put(DatabaseContract.CoinEntry.COLUMN_COUNTRY,i.country)

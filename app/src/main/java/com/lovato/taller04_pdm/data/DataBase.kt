@@ -16,7 +16,7 @@ private const val SQL_CREATE_ENTRIES =
             "${DatabaseContract.CoinEntry.COLUMN_YEAR} TEXT" +
             "${DatabaseContract.CoinEntry.COLUMN_ISAVAILABLE} INTEGER," +
             "${DatabaseContract.CoinEntry.COLUMN_VALUE_US} REAL," +
-            "${DatabaseContract.CoinEntry.COLUMN_IMG} TEXT )" 
+            "${DatabaseContract.CoinEntry.COLUMN_IMG} TEXT )"
 
 
 // TODO(7) Se crea una cadena de texto con la instrucción de eliminación de tabla usando SQL.

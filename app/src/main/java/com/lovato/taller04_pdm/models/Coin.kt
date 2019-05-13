@@ -1,6 +1,7 @@
 package com.lovato.taller04_pdm.models
 
-data class Coin(var name: String = "N/A",
+data class Coin(var _id: Int,
+                var name: String = "N/A",
                 var country: String = "N/A",
                 var year: Int = 3,
                 var isAvailable:Int = 3,
